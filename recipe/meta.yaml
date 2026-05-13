@@ -1,45 +1,52 @@
-{% set name = "<PLEASE ADD PKG NAME>" %}
-{% set version = "<PLEASE ADD PKG VERSION>" %}
+{% set version = "0.8.1" %}
 
 package:
-  name: {{ name|lower }}
+  name: sphinxcontrib-typer
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: <sha256>
+  url: https://pypi.org/packages/source/s/sphinxcontrib-typer/sphinxcontrib_typer-{{ version }}.tar.gz
+  sha256: 223016757b3ab1995971fce048ed5e939b4fd45ca0c255e320e0f87d04dbf9ef
 
 build:
-  number: 0
+  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: True  # [py<38]
+  number: 0
 
 requirements:
   host:
     - python
+    - hatchling
     - pip
   run:
     - python
+    - sphinx >=6.0
+    - typer >=0.22.0,<1.0.0
 
 test:
   imports:
-    - {{ name.replace('-', '.') }}
-  requires:
-    - pip
+    - sphinxcontrib.typer
   commands:
     - pip check
+  requires:
+    - pip
+    - python
 
 about:
-  home: <PLEASE ADD HOME URL>
-  summary: <PLEASE ADD SUMMARY>
+  home: https://sphinxcontrib-typer.readthedocs.io
+  summary: Auto generate docs for typer commands.
   description: |
-    <PLEASE ADD DESCRIPTION>
-  license: <PLEASE ADD LICENSE>
-  license_family: <PLEASE ADD LICENSE_FAMILY>
-  license_file: <PLEASE_ADD_LICENSE_FILE>
-  dev_url: <PLEASE ADD DEV URL>
-  doc_url: <PLEASE ADD DOC URL>
+    Sphinx extension that provides a directive to auto-generate documentation for
+    Typer and Click CLI applications, using Typer's rich console output in text,
+    HTML, or SVG formats.
+  doc_url: https://sphinxcontrib-typer.readthedocs.io
+  dev_url: https://github.com/sphinx-contrib/typer
+  license: MIT AND BSD-3-Clause
+  license_family: Other
+  license_file:
+    - LICENSE
+    - tests/click/LICENSE.rst
 
 extra:
   recipe-maintainers:
-    - Jrice1317
+    - steven
